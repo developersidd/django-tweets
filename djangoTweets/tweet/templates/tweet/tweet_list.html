@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}
+    Chai aur Tweets - Tweet List
+{% endblock title %}
+{% block content %}
+    <a class="btn btn-primary my-3" href="{% url "tweet_create" %}">Create Tweet</a>
+    <div class="container row gap-3">
+        {% for tweet in tweets %}
+            <div class="card col-md-4">
+                <img src="{{ tweet.photo.url }}"
+                     class="card-img-top"
+                     width="100%"
+                     height="200px"
+                     alt="{{ tweet.text }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tweet.user.username }}</h5>
+                    <h5 class="card-title">{{ tweet.text }}</h5>
+                    <p class="card-text">Created at: {{ tweet.created_at }}</p>
+                    <a href="{% url 'tweet_details' tweet.id %}" class="btn btn-primary">View</a>
+                    <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-secondary">Edit</a>
+                    <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

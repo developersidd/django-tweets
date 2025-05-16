@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}
+    Chai aur Tweets
+{% endblock title %}
+{% block content %}
+    {% if form.instance.pk %}
+        <h1>Edit Tweet</h1>
+    {% else %}
+        <h1>Create Tweet</h1>
+    {% endif %}
+    <form method="post" class="form mb-3" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="mt-2 btn btn-primary">Submit</button>
+    </form>
+    <a href="{% url 'tweet_list' %}" class="btn btn-secondary">Back to Tweet List</a>
+{% endblock content %}
