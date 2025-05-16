@@ -1,4 +1,7 @@
 from django.urls import path
-from .views import tweet_details
+from .views import tweet_details, home
 
-urlpatterns = [path("", tweet_details, name="tweet_details")]
+urlpatterns = [
+    path("", home, name="home"),
+    path("<int:tweetId>/", tweet_details, name="tweet_details"),
+]
