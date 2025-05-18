@@ -3,6 +3,7 @@ from .models import Tweet
 from django.shortcuts import get_object_or_404, redirect
 from .forms import TweetForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.db.models import Q
 
@@ -82,7 +83,7 @@ def tweet_details(request, tweet_id):
 def register_user(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data["password1"])
             form.save()

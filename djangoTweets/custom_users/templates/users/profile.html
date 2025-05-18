@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}
+    Profile Page
+{% endblock title %}
+{% block content %}
+    <div class="container mt-5">
+        <h2>Update Profile</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if profile_form.avatar.value %}
+                <div class="mb-3">
+                    <img width="150"
+                         height="150"
+                         src="{{ profile_form.avatar.value.url }}"
+                         alt="Current Avatar"
+                         class="rounded-circle" />
+                </div>
+            {% endif %}
+            <div class="mb-3">
+                {{ profile_form.avatar.label_tag }}
+                {{ profile_form.avatar }}
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+{% endblock content %}

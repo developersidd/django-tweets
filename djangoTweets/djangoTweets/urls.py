@@ -9,5 +9,6 @@ urlpatterns = [
     path("", views.home, name="index"),
     path("admin/", admin.site.urls),
     path("tweet/", include("tweet.urls")),
+    path("users/", include("custom_users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
