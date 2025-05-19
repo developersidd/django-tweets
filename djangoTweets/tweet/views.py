@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Tweet
 from django.shortcuts import get_object_or_404, redirect
-from .forms import TweetForm, UserRegistrationForm
+from .forms import TweetForm, UserRegistrationForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login
@@ -74,9 +74,24 @@ def searched_tweets(request):
     return render(request, "tweet/searched_tweets.html", {"tweets": tweets})
 
 
+# get tweet details
 def tweet_details(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id)
-    return render(request, "tweet/tweet/tweet_details.html", {"tweet": tweet})
+    # Add comments in tweet
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.tweet = tweet
+            comment.user = request.user
+            form.save()
+            return redirect("tweet_details", tweet_id=tweet.id)
+    else:
+        form = CommentForm()
+
+    return render(
+        request, "tweet/tweet_details.html", {"tweet": tweet, "comment_form": form}
+    )
 
 
 # register user

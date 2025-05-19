@@ -1,5 +1,5 @@
 from django import forms
-from .models import Tweet
+from .models import Tweet, Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -18,3 +18,15 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         # here using tules because using built-in django forms
         fields = ("username", "email", "password1", "password2")
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["comment"]
+
+    comment = forms.CharField(
+        widget=forms.Textarea(
+            attrs={"placeholder": "Enter you comment", "class": "form-control"}
+        )
+    )

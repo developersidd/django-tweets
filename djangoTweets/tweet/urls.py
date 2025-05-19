@@ -12,7 +12,7 @@ from .views import (
 urlpatterns = [
     path("", tweet_list, name="tweet_list"),
     path("result", searched_tweets, name="searched_tweets"),
-    path("<int:tweetId>/", tweet_details, name="tweet_details"),
+    path("<int:tweet_id>/", tweet_details, name="tweet_details"),
     path("create/", tweet_create, name="tweet_create"),
     path("<int:tweet_id>/edit/", tweet_edit, name="tweet_edit"),
     path("<int:tweet_id>/delete", tweet_delete, name="tweet_delete"),
