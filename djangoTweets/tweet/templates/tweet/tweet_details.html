@@ -40,9 +40,7 @@
                 {% if form.errors or form.no_field_errors %}
                     <div class="alert alert-danger">
                         <ul>
-                            {% for error in form.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
+                            {% for error in form.errors %}<li>{{ error }}</li>{% endfor %}
                         </ul>
                     </div>
                 {% endif %}
@@ -59,15 +57,23 @@
                          height="50">
                     - <strong>{{ comment.user.username }}</strong>
                     {% comment %} create a dropdown menu with edit and delete option {% endcomment %}
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
-                        </button>
-                        <ul class="dropdown-menu" aria-labelled-by="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                        </ul>
-                    </div>
+                    {% if user == comment.user %}
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">Actions</button>
+                            <ul class="dropdown-menu" aria-labelled-by="dropdownMenuButton">
+                                <li>
+                                      <a href="{% url 'edit_comment' comment.id %}">Edit</a>
+                                </li>
+                                <li>
+                                      <a href="{% url 'delete_comment' comment.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
                 </li>
             {% empty %}
                 <li>No comments yet.</li>

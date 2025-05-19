@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Edit Comment</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+    <button class="btn btn-outline-secondary"
+            href="{% url 'tweet_details' comment.tweet.id %}">Cancel</button>
+{% endblock content %}

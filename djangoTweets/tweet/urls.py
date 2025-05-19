@@ -1,20 +1,13 @@
 from django.urls import path
-from .views import (
-    tweet_details,
-    tweet_list,
-    tweet_create,
-    tweet_edit,
-    tweet_delete,
-    register_user,
-    searched_tweets,
-)
-
+from . import views
 urlpatterns = [
-    path("", tweet_list, name="tweet_list"),
-    path("result", searched_tweets, name="searched_tweets"),
-    path("<int:tweet_id>/", tweet_details, name="tweet_details"),
-    path("create/", tweet_create, name="tweet_create"),
-    path("<int:tweet_id>/edit/", tweet_edit, name="tweet_edit"),
-    path("<int:tweet_id>/delete", tweet_delete, name="tweet_delete"),
-    path("register", register_user, name="register"),
+    path("", views.tweet_list, name="tweet_list"),
+    path("result", views.searched_tweets, name="searched_tweets"),
+    path("<int:tweet_id>/", views.tweet_details, name="tweet_details"),
+    path("create/", views.tweet_create, name="tweet_create"),
+    path("edit/<int:tweet_id>", views.tweet_edit, name="tweet_edit"),
+    path("<int:tweet_id>/delete", views.tweet_delete, name="tweet_delete"),
+    path("comment/<int:comment_id>/edit/", views.comment_edit, name="edit_comment"),
+    path("comment/<int:comment_id>/delete/", views.comment_delete, name="delete_comment"),
+    path("register", views.register_user, name="register"),
 ]

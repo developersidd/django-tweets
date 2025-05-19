@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from .models import Tweet
+from .models import Tweet, Comment
 from django.shortcuts import get_object_or_404, redirect
 from .forms import TweetForm, UserRegistrationForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.db.models import Q
+from django.http import HttpResponseForbidden
 
 
 # Create your views here.
@@ -92,6 +93,34 @@ def tweet_details(request, tweet_id):
     return render(
         request, "tweet/tweet_details.html", {"tweet": tweet, "comment_form": form}
     )
+
+
+# Edit Comment
+@login_required
+def comment_edit(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id, user=request.user)
+    if request.user != comment.user:
+        return HttpResponseForbidden("You are not allowed to edit this comment.")
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect("tweet_details", tweet_id=comment.tweet.id)
+
+    else:
+        form = CommentForm(instance=comment)
+    return render(
+        request, "tweet/edit_comment.html", {"form": form, "comment": comment}
+    )
+
+
+# Delete comment
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id, user=request.user)
+    if request.user != comment.user:
+        return HttpResponseForbidden("You are not allowed to delete this comment.")
+    comment.delete()
+    return redirect("tweet_details", tweet_id=comment.tweet.id)
 
 
 # register user
