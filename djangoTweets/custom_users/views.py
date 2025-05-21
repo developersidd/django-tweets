@@ -9,7 +9,7 @@ def home(request):
 
 
 # Profile
-@login_required
+@login_required(login_url="login")
 def profile(request):
     if request.method == "POST":
         profile_form = ProfileUpdateForm(

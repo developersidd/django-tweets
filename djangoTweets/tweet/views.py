@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Tweet, Comment
 from django.shortcuts import get_object_or_404, redirect
-from .forms import TweetForm, UserRegistrationForm, CommentForm
+from .forms import TweetForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login
@@ -15,7 +15,7 @@ def home(request):
 
 
 # create tweet
-@login_required
+@login_required(login_url="login")
 def tweet_create(request):
     if request.method == "POST":
         # create a form instance and populate it with data from the request
@@ -35,7 +35,7 @@ def tweet_create(request):
 
 
 # Edit Tweet
-@login_required
+@login_required(login_url="login")
 def tweet_edit(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
     if request.method == "POST":
@@ -51,7 +51,7 @@ def tweet_edit(request, tweet_id):
 
 
 # delete tweet
-@login_required
+@login_required(login_url="login")
 def tweet_delete(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
     if request.method == "POST":
@@ -96,7 +96,7 @@ def tweet_details(request, tweet_id):
 
 
 # Edit Comment
-@login_required
+@login_required(login_url="login")
 def comment_edit(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id, user=request.user)
     if request.user != comment.user:
@@ -121,20 +121,3 @@ def comment_delete(request, comment_id):
         return HttpResponseForbidden("You are not allowed to delete this comment.")
     comment.delete()
     return redirect("tweet_details", tweet_id=comment.tweet.id)
-
-
-# register user
-def register_user(request):
-    if request.method == "POST":
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data["password1"])
-            form.save()
-            login(request, user=user)
-            return redirect("tweet_list")
-
-    else:
-        form = UserRegistrationForm()
-
-    return render(request, "registration/register.html", {"form": form})

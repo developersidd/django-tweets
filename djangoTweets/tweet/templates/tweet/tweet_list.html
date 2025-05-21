@@ -17,12 +17,12 @@
                     <h5 class="card-title">{{ tweet.text }}</h5>
                     <p class="card-text">Created at: {{ tweet.created_at }}</p>
                     <a href="{% url 'tweet_details' tweet.id %}" class="btn btn-primary">View</a>
-
                     {% if user.is_authenticated and user == tweet.user %}
-                        <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-secondary">Edit</a>
-                        <a href="{% url 'tweet_delete' tweet.id %}?hello=world" class="btn btn-danger">Delete</a>
-                        {% endif %}
-                    </div>
+                        <a href="{% url 'tweet_edit' tweet.id %}" class="btn ">Edit</a>
+                        <a href="{% url 'tweet_delete' tweet.id %}?hello=world"
+                           class="btn">Delete</a>
+                    {% endif %}
+                </div>
             </div>
         {% endfor %}
     </div>
